@@ -1,0 +1,3 @@
+rootProject.name = 'feed_the_programmer'
+
+include ':app'
