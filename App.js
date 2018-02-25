@@ -4,25 +4,23 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { Alert } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import React from 'react';
+import { Provider } from 'react-redux';
+import Router from './Containers/Router';
 import store from './redux';
-
-export default class App extends Component<{}> {
-  componentWillMount() {
-    store.dispatch({ type: 'test' });
-  }
-
-  render() {
-    return (
-      <RNCamera
+/**
+ *
+ * <RNCamera
         style={{ flex: 1 }}
         onBarCodeRead={({ data }) => {
           store.dispatch({ type: 'food_discovered', payload: data });
           Alert.alert('Yeah!!!', `You found a ${data}`);
         }}
       />
-    );
-  }
-}
+*/
+
+export default () => (
+  <Provider store={store}>
+    <Router />
+  </Provider>
+);
