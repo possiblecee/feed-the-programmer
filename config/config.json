@@ -1,0 +1,11 @@
+{
+  "firebase": {
+    "authenticate": "https://us-central1-feed-the-programmer.cloudfunctions.net/registerUser",
+    "user": "https://feed-the-programmer.firebaseio.com/Users/Users/{uuid}.json"
+  },
+  "user": {
+    "MULTIPLYER": 60000,
+    "LIFETIME": 5,
+    "MAX_WEIGHT": 256
+  }
+}

@@ -8,13 +8,17 @@
     "test": "jest"
   },
   "dependencies": {
+    "md5": "^2.2.1",
     "react": "16.2.0",
     "react-native": "0.53.0",
     "react-native-camera": "^1.0.1",
     "react-native-qrcode-scanner": "0.0.30",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
+    "redux-api-middleware": "^2.3.0",
     "redux-create-reducer": "^1.1.1",
+    "redux-persist": "^5.9.1",
+    "redux-thunk": "^2.2.0",
     "remote-redux-devtools": "^0.5.12",
     "shelljs": "^0.8.1"
   },

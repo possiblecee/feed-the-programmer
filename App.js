@@ -4,23 +4,31 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import Router from './Containers/Router';
-import store from './redux';
-/**
- *
- * <RNCamera
-        style={{ flex: 1 }}
-        onBarCodeRead={({ data }) => {
-          store.dispatch({ type: 'food_discovered', payload: data });
-          Alert.alert('Yeah!!!', `You found a ${data}`);
-        }}
-      />
-*/
+import createStore from './redux';
 
-export default () => (
-  <Provider store={store}>
-    <Router />
-  </Provider>
-);
+console.disableYellowBox = true;
+
+class App extends Component {
+  state = {
+    store: createStore((store) => {
+      this.setState({ store });
+    })
+  };
+
+  render() {
+    if (!this.state.store) {
+      return null;
+    }
+
+    return (
+      <Provider store={this.state.store}>
+        <Router />
+      </Provider>
+    );
+  }
+}
+
+export default App;

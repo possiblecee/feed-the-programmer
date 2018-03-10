@@ -5,14 +5,27 @@ import { getRoute, ROUTES } from '../redux/router';
 import Tabbar from './Tabbar';
 import PropTypes from 'prop-types';
 import Onboarding from './Onboarding';
+import Scan from './Scan';
+import Header from './Header';
+import { PAGE_TOP_PADDING } from '../styles';
 
-const RenderScreen = ({ route }) => {
+const getComponent = (route) => {
   switch (route) {
     case ROUTES.ONBOARDING:
-      return <Onboarding />;
+      return Onboarding;
+    case ROUTES.SCAN:
+      return Scan;
     default:
-      return null;
+      return () => null;
   }
+}
+
+const RenderScreen = ({ route }) => {
+  return React.createElement(getComponent(route), {
+    style: {
+      paddingTop: PAGE_TOP_PADDING,
+    },
+  });
 };
 
 RenderScreen.propTypes = {
@@ -22,7 +35,10 @@ RenderScreen.propTypes = {
 const Router = ({ route }) => (
   <View style={{ flex: 1 }}>
     <RenderScreen route={route} />
-    <Tabbar />
+    <Header />
+    {route !== ROUTES.ONBOARDING && (
+      <Tabbar />
+    )}
   </View>
 );
 

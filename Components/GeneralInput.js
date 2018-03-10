@@ -13,6 +13,10 @@ class GeneralInput extends Component {
     this.focus();
   };
 
+  onChange = (e) => {
+    this.props.onChange(e);
+  }
+
   render() {
     const {
       label,
@@ -24,7 +28,13 @@ class GeneralInput extends Component {
       <TouchableWithoutFeedback onPress={this.onPress}>
         <View style={[s.root, style]}>
           <Text children={label} style={s.label} />
-          <TextInput ref="input" {...props} style={s.input} />
+          <TextInput
+            ref="input"
+            {...props}
+            onChangeText={this.onChange}
+            onChange={null}
+            style={s.input}
+          />
         </View>
       </TouchableWithoutFeedback>
     );
