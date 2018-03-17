@@ -1,10 +1,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Vibration, Alert, View } from 'react-native';
+import { Vibration, Alert, View, Image } from 'react-native';
 import RNCamera from 'react-native-camera';
 import { validateCookie } from '../services/cookie';
-import { getCookies, setCookie } from '../redux/user';
+import { getCookies, setCookie, getSystem } from '../redux/user';
+import { openOverlay, OVERLAYS } from '../redux/router';
 import PropTypes from 'prop-types';
+import { SUPPORTED_SYSTEMS } from '../redux/user';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../styles';
+
+const IMAGES = {
+  [SUPPORTED_SYSTEMS.APPLE]: require('../assets/bacground/mac.png'),
+  [SUPPORTED_SYSTEMS.WINDOWS]: require('../assets/bacground/windows.png'),
+  [SUPPORTED_SYSTEMS.LINUX]: require('../assets/bacground/linux.png'),
+};
+
+const s = {
+  scan: {
+    flex: 1,
+  },
+  image: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT,
+    resizeMode: 'cover',
+  },
+};
 
 class Scan extends Component {
   activeCookie = '';
@@ -17,8 +42,6 @@ class Scan extends Component {
         if (!ids.includes(cookie.id)) {
           Vibration.vibrate();
           this.props.setCookie(cookie);
-        } else {
-          Alert.alert('You already ate this cookie fat boy!')
         }
       }
 
@@ -30,10 +53,14 @@ class Scan extends Component {
   }
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <View style={s.scan}>
         <RNCamera
-          style={{ flex: 1 }}
+          style={s.scan}
           onBarCodeRead={this.onQRReead}
+        />
+        <Image
+          source={IMAGES[this.props.system]}
+          style={s.image}
         />
       </View>
     );
@@ -42,15 +69,20 @@ class Scan extends Component {
 
 Scan.propTypes = {
   cookies: PropTypes.array,
+  system: PropTypes.string,
   setCookie: PropTypes.func,
 };
 
 const mapStateToProps = (state) => ({
-  cookies: getCookies(state)
+  cookies: getCookies(state),
+  system: getSystem(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  setCookie: (cookie) => dispatch(setCookie(cookie)),
+  setCookie: (cookie) => {
+    dispatch(setCookie(cookie));
+    dispatch(openOverlay(OVERLAYS.YOU_FOUND_IT));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Scan);

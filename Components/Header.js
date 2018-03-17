@@ -12,6 +12,7 @@ const getCookieValue = ({ timestamp, value }) => (
 class Header extends Component {
   state = {
     health: 100,
+    displayHealth: true,
     weight: USER_CONFIG.MAX_WEIGHT,
     width: new Animated.Value(HEALTH_MONITOR_MAX_WIDTH),
   };
@@ -45,6 +46,7 @@ class Header extends Component {
       if (weight !== this.state.weight) {
         this.setState({
           weight,
+          displayHealth: health < 0.2 ? !this.state.displayHealth : true
         });
       }
     }, 500);
@@ -60,9 +62,11 @@ class Header extends Component {
               <Text children={`${this.state.weight} KB`} style={s.currentWeight} />
             </View>
             <View style={s.healthMonitor}>
-              <Animated.View
-                style={[s.healthMonitorStatus, { width: this.state.width }]}
-              />
+              {this.state.displayHealth && (
+                <Animated.View
+                  style={[s.healthMonitorStatus, { width: this.state.width }]}
+                />
+              )}
             </View>
           </View>
         )}

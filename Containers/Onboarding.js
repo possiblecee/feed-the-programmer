@@ -22,7 +22,11 @@ const mapDispatchToProps = (dispatch) => ({
   setEmail: (email) => dispatch(setEmail(email)),
   setNickName: (nickname) => dispatch(setNickName(nickname)),
   setSystem: (system) => dispatch(setSystem(system)),
-  authenticate: () => dispatch(authenticate()).then(() => dispatch(navigateTo(ROUTES.SCAN))),
+  authenticate: () => dispatch(authenticate()).then(({ success }) => {
+    if (success) {
+      dispatch(navigateTo(ROUTES.SCAN));
+    }
+  }),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Onboarding);

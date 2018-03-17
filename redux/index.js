@@ -5,7 +5,9 @@ import user, { isAuthenticated } from './user';
 import router, { ROUTES, navigateTo } from './router';
 import thunk from 'redux-thunk';
 import { apiMiddleware } from 'redux-api-middleware';
-import { persistStore, autoRehydrate, persistReducer } from 'redux-persist'
+import { persistStore, autoRehydrate, persistReducer, createTransform } from 'redux-persist';
+import errorMiddleware from './errorMiddleware';
+import loaderMiddleware from './loaderMiddleware';
 
 const { scriptURL } = NativeModules.SourceCode;
 const address = scriptURL.split('://')[1].split('/')[0];
@@ -14,11 +16,11 @@ const hostname = address.split(':')[0];
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user']
-}
+  whitelist: ['user'],
+};
 
 const rootReducer = persistReducer(persistConfig, combineReducers({ user, router }));
-const middlewares = [thunk, apiMiddleware];
+const middlewares = [thunk, apiMiddleware, errorMiddleware, loaderMiddleware];
 
 export default (onComplete) => {
   const store = createStore(rootReducer, compose(

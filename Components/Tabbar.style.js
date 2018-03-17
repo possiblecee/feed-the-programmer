@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { WHITE, GRAY_LIGHT } from '../styles';
 
 export default StyleSheet.create({
   root: {
@@ -6,7 +7,16 @@ export default StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 50,
-    backgroundColor: 'red',
+    height: 60,
+    flexDirection: 'row',
+  },
+  item: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: WHITE,
+  },
+  active: {
+    backgroundColor: GRAY_LIGHT,
   },
 });

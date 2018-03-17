@@ -40,10 +40,16 @@ class Onboarding extends Component {
   render() {
     return (
       <View style={[s.root, this.props.style]}>
-        <KeyboardAvoidingView style={s.child} behavior="padding">
-          <ScrollView style={s.child} showsVerticalScrollIndicator={false}>
+        <KeyboardAvoidingView
+          style={s.child}
+          behavior="padding"
+          >
+          <ScrollView
+            style={[s.child, { marginBottom: 30 }]}
+            showsVerticalScrollIndicator={false}
+          >
             <GeneralInput
-              label="Nick Name"
+              label="Nickname"
               value={this.props.nickname}
               onChange={this.props.setNickName}
             />

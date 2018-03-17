@@ -6,6 +6,7 @@ export const BLUE = '#1C1258';
 export const PINK = '#FE4D7A';
 export const WHITE = '#fff';
 export const YELLOW = '#FFE164';
+export const BLACK_20 = 'rgba(0,0,0,0.2)';
 
 export const HEADER_HEIGHT = 80;
 export const BASE_SPACING = 15;
@@ -15,6 +16,9 @@ export const SYSTEM_FONT = Platform.select({
   ios: { fontFamily: 'Helvetica' },
   android: { fontFamily: 'Roboto' },
 });
+export const ABSOLUTE = {
+  position: 'absolute',
+};
 
 export const INNER_WIDTH = WINDOW_WIDTH - (BASE_SPACING * 2);
 

@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>FEED THE PROGRAMMER - QR GENERATOR</title>
+    <script src="./node_modules/qrcode/build/qrcode.min.js"></script>
+    <script src="./node_modules/blueimp-md5/js/md5.min.js"></script>
+
+  </head>
+  <body>
+    <select data-select>
+      <option value="COOKIE">COOKIE</option>
+      <option value="HONEY_POT">HONEY POT</option>
+      <option value="BEAN">BEAN</option>
+      <option value="CURRY">CURRY</option>
+      <option value="RASPBERRY">RASPBERRY</option>
+    </select>
+    <button type="button" data-generate>GENERATE QR</button>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      const generateFood = (type) => {
+        const data = {
+          id: new Date().getTime(),
+          value: Math.floor(Math.random() * 10) + 1,
+          type,
+        };
+
+        data.validator = md5('POSSIBLE_' + data.id + '_' + data.value);
+
+        QRCode.toCanvas(canvas, JSON.stringify(data), function (error) {
+          if (error) console.error(error)
+          console.log('FOOD GENERATED', data);
+        })
+      }
+
+      const canvas = document.getElementById('canvas');
+      const select = document.querySelector('[data-select]');
+      const button = document.querySelector('[data-generate]');
+
+      button.addEventListener('click', (e) => {
+        generateFood(select.value);
+      });
+
+    </script>
+  </body>
+</html>

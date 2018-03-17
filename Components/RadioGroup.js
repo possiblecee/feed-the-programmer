@@ -20,18 +20,15 @@ class RadioGroup extends Component {
             <TouchableOpacity
               key={value}
               onPress={() => this.onPress(value)}
+              style={[
+                s.option,
+                this.props.value === value && s.selected,
+                { width: itemSize, height: itemSize },
+              ]}
             >
-              <View
-                style={[
-                  s.option,
-                  this.props.value === value && s.selected,
-                  { width: itemSize, height: itemSize },
-                ]}
-              >
-                <Image
-                  source={image}
-                />
-              </View>
+              <Image
+                source={image}
+              />
             </TouchableOpacity>
           ))}
         </View>
