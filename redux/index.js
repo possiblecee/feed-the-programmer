@@ -1,13 +1,13 @@
 import { NativeModules, Platform, AsyncStorage } from 'react-native';
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
-import devToolsEnhancer from 'remote-redux-devtools';
 import user, { isAuthenticated } from './user';
 import router, { ROUTES, navigateTo } from './router';
 import thunk from 'redux-thunk';
 import { apiMiddleware } from 'redux-api-middleware';
-import { persistStore, autoRehydrate, persistReducer, createTransform } from 'redux-persist';
+import { persistStore, autoRehydrate, persistReducer } from 'redux-persist';
 import errorMiddleware from './errorMiddleware';
 import loaderMiddleware from './loaderMiddleware';
+import { createLogger } from 'redux-logger';
 
 const { scriptURL } = NativeModules.SourceCode;
 const address = scriptURL.split('://')[1].split('/')[0];
@@ -17,26 +17,20 @@ const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['user'],
+  debug: true
 };
 
 const rootReducer = persistReducer(persistConfig, combineReducers({ user, router }));
 const middlewares = [thunk, apiMiddleware, errorMiddleware, loaderMiddleware];
 
-const enhancers = [applyMiddleware(...middlewares)];
-
 if (__DEV__) {
-  enhancers.push(
-    devToolsEnhancer({
-      name: Platform.OS,
-      hostname,
-      port: 5678,
-      suppressConnectErrors: false,
-    })
-  );
+  middlewares.push(createLogger({
+    collapsed: true,
+  }));
 }
 
 export default (onComplete) => {
-  const store = createStore(rootReducer, compose(...enhancers));
+  const store = createStore(rootReducer, applyMiddleware(...middlewares));
 
   persistStore(store, undefined, () => {
     if (isAuthenticated(store.getState())){

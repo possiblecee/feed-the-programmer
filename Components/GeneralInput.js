@@ -34,6 +34,7 @@ class GeneralInput extends Component {
             onChangeText={this.onChange}
             onChange={null}
             style={s.input}
+            underlineColorAndroid="rgba(0,0,0,0)"
           />
         </View>
       </TouchableWithoutFeedback>

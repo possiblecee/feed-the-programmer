@@ -14,6 +14,7 @@ export default StyleSheet.create({
     alignSelf: 'stretch',
   },
   disabled: {
+    height: 60,
     backgroundColor: GRAY_DARK,
   },
   label: {

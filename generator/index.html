@@ -17,6 +17,18 @@
     <canvas id="canvas"></canvas>
 
     <script>
+      const IMAGES = {
+        COOKIE: '../assets/cookie@2x.png',
+        HONEY_POT: '../assets/honeypot@2x.png',
+        BEAN: '../assets/bean@2x.png',
+      };
+
+      const loadImage = (src) => new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.src= src;
+      });
+
       const generateFood = (type) => {
         const data = {
           id: new Date().getTime(),
@@ -26,10 +38,18 @@
 
         data.validator = md5('POSSIBLE_' + data.id + '_' + data.value);
 
-        QRCode.toCanvas(canvas, JSON.stringify(data), function (error) {
-          if (error) console.error(error)
-          console.log('FOOD GENERATED', data);
-        })
+
+        loadImage(IMAGES[type]).then((img) => {
+          QRCode.toCanvas(canvas, JSON.stringify(data), { scale: 6 }, function (error) {
+            const offset = {
+              x: (canvas.width  - img.width) / 2,
+              y: (canvas.height  - img.height) / 2,
+            };
+            ctx = canvas.getContext('2d');
+            ctx.drawImage(img, offset.x, offset.y);
+            console.log(data);
+          });
+        });
       }
 
       const canvas = document.getElementById('canvas');

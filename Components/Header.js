@@ -52,6 +52,12 @@ class Header extends Component {
     }, 500);
   }
 
+  componentWillUpdate({ isAlive }, { weight }) {
+    if (!!weight !== isAlive) {
+      this.props.setDeath(!!weight);
+    }
+  }
+
   render() {
     return (
       <View style={s.root}>
@@ -78,6 +84,8 @@ class Header extends Component {
 Header.propTypes = {
   cookies: PropTypes.array,
   isAuthenticated: PropTypes.bool,
+  setDeath: PropTypes.func,
+  isAlive: PropTypes.bool,
 };
 
 export default Header;

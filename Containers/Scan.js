@@ -6,14 +6,20 @@ import { validateCookie } from '../services/cookie';
 import { getCookies, setCookie, getSystem } from '../redux/user';
 import { openOverlay, OVERLAYS } from '../redux/router';
 import PropTypes from 'prop-types';
-import { SUPPORTED_SYSTEMS } from '../redux/user';
+import { SUPPORTED_SYSTEMS, getUserIsAlive } from '../redux/user';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../styles';
 import ifAuthenticated from './IfAuthenticated';
 
-const IMAGES = {
-  [SUPPORTED_SYSTEMS.APPLE]: require('../assets/bacground/mac.png'),
-  [SUPPORTED_SYSTEMS.WINDOWS]: require('../assets/bacground/windows.png'),
-  [SUPPORTED_SYSTEMS.LINUX]: require('../assets/bacground/linux.png'),
+const ALIVE_IMAGES = {
+  [SUPPORTED_SYSTEMS.APPLE]: require('../assets/background/mac.png'),
+  [SUPPORTED_SYSTEMS.WINDOWS]: require('../assets/background/windows.png'),
+  [SUPPORTED_SYSTEMS.LINUX]: require('../assets/background/linux.png'),
+};
+
+const DEATH_IMAGES = {
+  [SUPPORTED_SYSTEMS.APPLE]: require('../assets/background/mac-death.png'),
+  [SUPPORTED_SYSTEMS.WINDOWS]: require('../assets/background/windows-death.png'),
+  [SUPPORTED_SYSTEMS.LINUX]: require('../assets/background/linux-death.png'),
 };
 
 const s = {
@@ -52,15 +58,26 @@ class Scan extends Component {
       }, 2000);
     }
   }
+
+  getImage() {
+    if (this.props.isAlive) {
+      return ALIVE_IMAGES[this.props.system];
+    }
+
+    return DEATH_IMAGES[this.props.system];
+  }
+
   render() {
     return (
       <View style={s.scan}>
-        <RNCamera
-          style={s.scan}
-          onBarCodeRead={this.onQRReead}
-        />
+        {this.props.isAlive && (
+          <RNCamera
+            style={s.scan}
+            onBarCodeRead={this.onQRReead}
+          />
+        )}
         <Image
-          source={IMAGES[this.props.system]}
+          source={this.getImage()}
           style={s.image}
         />
       </View>
@@ -72,11 +89,13 @@ Scan.propTypes = {
   cookies: PropTypes.array,
   system: PropTypes.string,
   setCookie: PropTypes.func,
+  isAlive: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
   cookies: getCookies(state),
   system: getSystem(state),
+  isAlive: getUserIsAlive(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

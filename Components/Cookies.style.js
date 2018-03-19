@@ -8,6 +8,7 @@ import {
   PINK,
   BOLD,
   YELLOW,
+  BASE_SPACING,
 } from '../styles';
 
 export default StyleSheet.create({
@@ -15,13 +16,15 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     ...BASE_PADDING,
-    justifyContent: 'space-between',
+    paddingLeft: 5,
     backgroundColor: GRAY_LIGHT,
   },
   item: {
     width: 100,
     height: 126,
     borderWidth: 5,
+    marginLeft: BASE_SPACING - 5,
+    marginTop: BASE_SPACING - 5,
     borderColor: WHITE,
   },
   imageWrapper: {

@@ -19,6 +19,7 @@ const UPDATE_ERROR = 'USER/UPDATE_ERROR';
 const FETCH_START = 'USER/FETCH_START';
 const FETCH_SUCCESS = 'USER/FETCH_SUCCESS';
 const FETCH_ERROR = 'USER/FETCH_ERROR';
+const USER_DEATH = 'USER/DEATH';
 
 export const FOOD_IMAGES = {
   COOKIE: require('../assets/cookie.png'),
@@ -58,6 +59,7 @@ export const getUUID = (state) => state.user.uuid;
 export const getCookies = (state) => state.user.foundStuff;
 export const getIsFetching = (state) => state.user.isFetching;
 export const isAuthenticated = (state) => !!getUUID(state);
+export const getUserIsAlive = (state) => !!state.user.isAlive;
 export const getLastCookie = (state) => {
   const cookies = getCookies(state);
   const cookie = [...cookies].sort((a, b) => a.timestamp - b.timestamp).pop();
@@ -94,6 +96,11 @@ export const setSystem = (payload) => ({
   payload,
 });
 
+export const setProgrammerDeath = (isAlive) => ({
+  type: USER_DEATH,
+  payload: isAlive,
+});
+
 const initialState = {
   nickname: '',
   uuid: '',
@@ -101,6 +108,7 @@ const initialState = {
   system: SUPPORTED_SYSTEMS.WINDOWS,
   foundStuff: [],
   isFetching: false,
+  isAlive: true,
 };
 
 export default createReducer(initialState, {
@@ -148,8 +156,14 @@ export default createReducer(initialState, {
     isFetching: true,
     ...camelizeKeys(payload),
   }),
-  'persist/REHYDRATE': (state) => ({
+  [USER_DEATH]: (state, { payload: isAlive }) => ({
     ...state,
+    isAlive,
+  }),
+  'persist/REHYDRATE': (state, { payload = {} }) => ({
+    ...initialState,
+    ...state,
+    ...payload.user,
     isFetching: false,
   })
 });

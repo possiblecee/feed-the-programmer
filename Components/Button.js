@@ -4,17 +4,19 @@ import s from './Button.style';
 import PropTypes from 'prop-types';
 
 const Button = ({ label, style, disabled, onPress, type }) => (
-  <TouchableOpacity
-    disabled={disabled}
-    onPress={onPress}
-    style={s.touchable}
-  >
-    <View
-      style={[s.root, s[`root_${type}`], disabled && s.disabled, style]}
+  <View style={style}>
+    <TouchableOpacity
+      disabled={disabled}
+      onPress={onPress}
+      style={s.touchable}
     >
-      <Text style={[s.label, s[`root_${type}`]]} children={label} />
-    </View>
-  </TouchableOpacity>
+      <View
+        style={[s.root, s[`root_${type}`], disabled && s.disabled]}
+      >
+        <Text style={[s.label, s[`root_${type}`]]} children={label} />
+      </View>
+    </TouchableOpacity>
+  </View>
 );
 
 Button.TYPES = {
