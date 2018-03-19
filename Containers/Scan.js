@@ -8,6 +8,7 @@ import { openOverlay, OVERLAYS } from '../redux/router';
 import PropTypes from 'prop-types';
 import { SUPPORTED_SYSTEMS } from '../redux/user';
 import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../styles';
+import ifAuthenticated from './IfAuthenticated';
 
 const IMAGES = {
   [SUPPORTED_SYSTEMS.APPLE]: require('../assets/bacground/mac.png'),
@@ -85,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Scan);
+export default ifAuthenticated(connect(mapStateToProps, mapDispatchToProps)(Scan));

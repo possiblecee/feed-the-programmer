@@ -22,16 +22,21 @@ const persistConfig = {
 const rootReducer = persistReducer(persistConfig, combineReducers({ user, router }));
 const middlewares = [thunk, apiMiddleware, errorMiddleware, loaderMiddleware];
 
-export default (onComplete) => {
-  const store = createStore(rootReducer, compose(
-    applyMiddleware(...middlewares),
+const enhancers = [applyMiddleware(...middlewares)];
+
+if (__DEV__) {
+  enhancers.push(
     devToolsEnhancer({
       name: Platform.OS,
       hostname,
       port: 5678,
       suppressConnectErrors: false,
     })
-  ));
+  );
+}
+
+export default (onComplete) => {
+  const store = createStore(rootReducer, compose(...enhancers));
 
   persistStore(store, undefined, () => {
     if (isAuthenticated(store.getState())){

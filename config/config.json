@@ -5,7 +5,7 @@
   },
   "user": {
     "MULTIPLYER": 60000,
-    "LIFETIME": 5,
+    "LIFETIME": 2,
     "MAX_WEIGHT": 256
   }
 }
